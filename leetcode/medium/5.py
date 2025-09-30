@@ -1,19 +1,29 @@
-class Solution:
-    def addBinary(self, a: str, b: str) -> str:
-        i, j = len(a) - 1, len(b) - 1  # indeks terakhir
-        carry = 0
-        result = []
+# class Solution:
+#     def longestPalindrome(self, s: str) -> str:
+#         res = ""
+#         for i in range(len(s)):
+#             for j in range(i+1, len(s)+1):
+#                 substring = s[i:j] 
+#                 if substring == substring[::-1] and len(substring) > len(res):
+#                     #aba == aba
+#                     res = substring
+#         return res
 
-        while i >= 0 or j >= 0 or carry:
-            total = carry
-            if i >= 0:
-                total += int(a[i])  
-                i -= 1
-            if j >= 0:
-                total += int(b[j])
-                j -= 1
+class Solution:###
+    def longestPalindrome(self, s: str) -> str:
+        def expand(left, right):
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            return s[left+1:right]  
+        res = ""
+        for i in range(len(s)):
+            odd = expand(i, i)
+            even = expand(i, i+1)
+            if len(odd) > len(res):
+                res = odd
+            if len(even) > len(res):
+                res = even
+        return res
 
-            result.append(str(total % 2))  
-            carry = total // 2             
 
-        return ''.join(reversed(result))
